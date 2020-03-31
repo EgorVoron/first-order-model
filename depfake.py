@@ -39,7 +39,7 @@ video_path = args.video_path
 photo_path = args.photo_path
 checkpoint_path = args.checkpoint_path
 output_path = args.output_path
-max_duration = args.max_duration
+max_duration = int(args.max_duration)
 watermark = bool(int(args.watermark))
 debug = bool(int(args.debug))
 
