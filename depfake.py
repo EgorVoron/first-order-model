@@ -3,6 +3,7 @@ import os
 import warnings
 import imageio
 import numpy as np
+import skvideo
 from skimage.transform import resize
 from moviepy.editor import *
 from PIL import Image
@@ -49,7 +50,7 @@ printer = Printer(debug)
 def prepare_input(photo_path, video_path, fps, max_duration):
     t = time()
     source_image = imageio.imread(photo_path)
-    driving_video = imageio.mimread(video_path, memtest=False)
+    driving_video = skvideo.io.vread(video_path)
 
     source_image = resize(source_image, (256, 256))[..., :3]
 
@@ -103,8 +104,7 @@ def run_core(video_path, photo_path, frames_dir, output_path, max_duration):
     for i in range(len(os.listdir(frames_dir))):
         filename = str(i) + '.png'
         img = np.array(Image.open(os.path.join(frames_dir, filename)))
-        if watermark:
-            img = add_watermark(img)
+        img = add_watermark(img)
         clips.append(ImageClip(img).set_duration(1 / fps))
 
     audio_clip = original_video.subclip(0, 10).audio
