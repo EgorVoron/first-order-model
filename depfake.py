@@ -53,12 +53,11 @@ def prepare_input(photo_path, video_path, fps, max_duration):
 
     source_image = resize(source_image, (256, 256))[..., :3]
 
-    
     short_driving_video = []
     for n in range(int(fps) * max_duration):
         short_driving_video.append(resize(driving_video[n], (256, 256))[..., :3])
 
-    printer.log('SHORTENED VIDEO DURATION', len(short_driving_video))
+    printer.log('SHORTENED VIDEO DURATION', len(short_driving_video) / fps)
     printer.log('PREPROCESSING TIME', time() - t)
     return source_image, short_driving_video
 
