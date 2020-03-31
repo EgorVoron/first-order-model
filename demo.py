@@ -26,11 +26,11 @@ def load_checkpoints(config_path, checkpoint_path):
 
     generator = OcclusionAwareGenerator(**config['model_params']['generator_params'],
                                         **config['model_params']['common_params'])
-    generator.cuda()
+    # generator.cuda()
 
     kp_detector = KPDetector(**config['model_params']['kp_detector_params'],
                              **config['model_params']['common_params'])
-    kp_detector.cuda()
+    # kp_detector.cuda()
 
     checkpoint = torch.load(checkpoint_path)
     generator.load_state_dict(checkpoint['generator'])
@@ -48,8 +48,8 @@ def load_checkpoints(config_path, checkpoint_path):
 def make_animation(source_image, driving_video, generator, kp_detector, relative=True, adapt_movement_scale=True):
     with torch.no_grad():
         predictions = []
-        source = torch.tensor(source_image[np.newaxis].astype(np.float32)).permute(0, 3, 1, 2).cuda()
-        driving = torch.tensor(np.array(driving_video)[np.newaxis].astype(np.float32)).permute(0, 4, 1, 2, 3).cuda()
+        source = torch.tensor(source_image[np.newaxis].astype(np.float32)).permute(0, 3, 1, 2)
+        driving = torch.tensor(np.array(driving_video)[np.newaxis].astype(np.float32)).permute(0, 4, 1, 2, 3)
         kp_source = kp_detector(source)
         kp_driving_initial = kp_detector(driving[:, :, 0])
 
