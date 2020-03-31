@@ -3,7 +3,7 @@ import os
 import warnings
 import imageio
 import numpy as np
-import skvideo
+import skvideo.io
 from skimage.transform import resize
 from moviepy.editor import *
 from PIL import Image
