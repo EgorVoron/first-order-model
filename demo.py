@@ -32,7 +32,7 @@ def load_checkpoints(config_path, checkpoint_path):
                              **config['model_params']['common_params'])
     # kp_detector.cuda()
 
-    checkpoint = torch.load(checkpoint_path)
+    checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'))
     generator.load_state_dict(checkpoint['generator'])
     kp_detector.load_state_dict(checkpoint['kp_detector'])
 
