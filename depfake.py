@@ -53,6 +53,7 @@ def prepare_input(photo_path, video_path, fps, max_duration):
 
     source_image = resize(source_image, (256, 256))[..., :3]
 
+    
     short_driving_video = []
     for n in range(int(fps) * max_duration):
         short_driving_video.append(resize(driving_video[n], (256, 256))[..., :3])
@@ -105,7 +106,7 @@ def run_core(video_path, photo_path, frames_dir, output_path, max_duration):
         img = add_watermark(img)
         clips.append(ImageClip(img).set_duration(1 / fps))
 
-    audio_clip = original_video.audio
+    audio_clip = original_video.subclip(0, 10).audio
     final_video = concatenate_videoclips(clips, method="compose")
     final_video = final_video.set_audio(audio_clip)
     final_video.write_videofile(output_path, fps=fps, audio=True)
