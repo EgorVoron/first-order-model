@@ -29,12 +29,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('video_path')
 parser.add_argument('photo_path')
 parser.add_argument('checkpoint_path')
+parser.add_argument('output_path')
 parser.add_argument('debug')
 args = parser.parse_args()
 
 video_path = args.video_path
 photo_path = args.photo_path
 checkpoint_path = args.checkpoint_path
+output_path = args.output_path
 debug = bool(int(args.debug))
 
 printer = Printer(debug)
@@ -62,7 +64,7 @@ def get_predictions(photo, video):
     return predictions
 
 
-def run_core(video_path, photo_path, frames_dir, output_dir):
+def run_core(video_path, photo_path, frames_dir, output_path):
     printer.write('Preparing input...')
     source_image, driving_video = prepare_input(photo_path, video_path)
     printer.write('Input is prepared!')
@@ -91,20 +93,18 @@ def run_core(video_path, photo_path, frames_dir, output_dir):
     audio_clip = original_video.audio
     final_video = concatenate_videoclips(clips, method="compose")
     final_video = final_video.set_audio(audio_clip)
-    final_video.write_videofile(os.path.join(output_dir, "result.mp4"), fps=fps, audio=True)
+    final_video.write_videofile(output_path, fps=fps, audio=True)
     printer.write('Video is saved!')
 
 
 if not os.path.isdir('frames'):
     os.mkdir('frames')
 
-if not os.path.isdir('output'):
-    os.mkdir('output')
 
 t = time()
 run_core(video_path=video_path,
          photo_path=photo_path,
          frames_dir='frames',
-         output_dir='output')
+         output_path=output_path)
 printer.log('FULL TIME', time() - t)
 printer.write('FINISHED')
