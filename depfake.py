@@ -103,7 +103,8 @@ def run_core(video_path, photo_path, frames_dir, output_path, max_duration):
     for i in range(len(os.listdir(frames_dir))):
         filename = str(i) + '.png'
         img = np.array(Image.open(os.path.join(frames_dir, filename)))
-        img = add_watermark(img)
+        if watermark:
+            img = add_watermark(img)
         clips.append(ImageClip(img).set_duration(1 / fps))
 
     audio_clip = original_video.subclip(0, 10).audio
