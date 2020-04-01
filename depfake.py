@@ -107,7 +107,8 @@ def run_core(video_path, photo_path, frames_dir, output_path, max_duration):
         img = add_watermark(img)
         clips.append(ImageClip(img).set_duration(1 / fps))
 
-    audio_clip = original_video.subclip(0, 10).audio
+    duration = min(int(len(driving_video) / int(fps)), max_duration)
+    audio_clip = original_video.subclip(0, duration).audio
     final_video = concatenate_videoclips(clips, method="compose")
     final_video = final_video.set_audio(audio_clip)
     final_video.write_videofile(output_path, fps=fps, audio=True)
